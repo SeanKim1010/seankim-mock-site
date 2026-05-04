@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeanKim 모의고사 배포 사이트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#071119; --bg2:#0b1520; --panel:#101a24; --panel2:#13202b;
+      --line:rgba(201,170,102,.18); --gold:#c9aa66; --gold2:#e5d2a4;
+      --text:#eef3f8; --muted:#9fadba; --danger:#8f3943;
+      --shadow:0 18px 50px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; color:var(--text); font-family:'Noto Sans KR',sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(201,170,102,.08), transparent 25%),
+        radial-gradient(circle at left bottom, rgba(255,255,255,.03), transparent 20%),
+        linear-gradient(180deg,#09131c 0%,#060d14 100%);
+    }
+    a{text-decoration:none;color:inherit}
+    .wrap{width:min(1180px,calc(100% - 32px)); margin:0 auto; padding:24px 0 60px}
+    .topbar{
+      position:sticky; top:16px; z-index:20;
+      display:flex; justify-content:space-between; align-items:center; gap:16px;
+      background:rgba(9,17,25,.78); border:1px solid var(--line); border-radius:20px;
+      padding:16px 20px; box-shadow:var(--shadow); backdrop-filter: blur(14px);
+      margin-bottom:24px;
+    }
+    .brand{display:flex; align-items:center; gap:14px}
+    .mark{
+      width:44px;height:44px;border-radius:14px; display:grid; place-items:center;
+      background:linear-gradient(145deg,rgba(201,170,102,.25),rgba(201,170,102,.08));
+      border:1px solid rgba(201,170,102,.35); color:var(--gold2); font-weight:800;
+    }
+    .brand strong{display:block}
+    .brand small{color:var(--muted)}
+    .nav{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+    .nav a,.nav button{
+      color:var(--muted); background:none; border:none; cursor:pointer; font:inherit;
+    }
+    .nav a:hover,.nav button:hover{color:var(--gold2)}
+    .hero{
+      display:grid; grid-template-columns:1.45fr .8fr; gap:24px;
+      border:1px solid var(--line); border-radius:32px; padding:46px;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      box-shadow:var(--shadow);
+    }
+    .notice{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(201,170,102,.08);
+      color:var(--gold2);
+      margin-bottom:18px;
+      font-size:.95rem;
+      font-weight:600;
+    }
+    .eyebrow,.label{letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-size:.78rem; margin:0 0 10px}
+    h1,h2{margin:0}
+    .hero h1{font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3.8rem); line-height:1.17; margin-bottom:16px}
+    .hero p{color:#d5dee6; line-height:1.85}
+    .hero-side{display:grid; gap:16px}
+    .stat,.card,.modal-card,.admin-panel{
+      background:linear-gradient(180deg, rgba(19,32,43,.95), rgba(12,21,29,.95));
+      border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+    }
+    .stat{padding:24px}
+    .stat span{display:block; color:var(--muted); margin-bottom:10px}
+    .stat strong{color:var(--gold2); font-size:1.12rem}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      border-radius:14px; padding:13px 18px; font-weight:700; cursor:pointer;
+      border:1px solid transparent; font:inherit;
+    }
+    .btn.small{padding:9px 12px; font-size:.9rem}
+    .gold{background:linear-gradient(180deg,#d8bd84,#b99654); color:#10161d}
+    .dark{background:rgba(255,255,255,.03); color:var(--text); border-color:rgba(255,255,255,.08)}
+    .danger{background:rgba(143,57,67,.16); color:#ffd8dd; border-color:rgba(143,57,67,.28)}
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:24px}
+    section{margin-top:28px}
+    .section-head{
+      display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:18px;
+    }
+    .section-head h2{font-size:1.9rem}
+    .pill{
+      padding:10px 14px; border-radius:999px; border:1px solid var(--line);
+      color:var(--gold2); background:rgba(201,170,102,.07);
+    }
+    .cards{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px}
+    .card{padding:22px}
+    .card-top{display:flex; justify-content:space-between; gap:12px; margin-bottom:14px}
+    .subject,.price,.tag{
+      display:inline-flex; align-items:center; min-height:34px; padding:0 12px;
+      border-radius:999px; font-size:.88rem;
+    }
+    .subject{background:rgba(201,170,102,.08); color:var(--gold2); border:1px solid var(--line)}
+    .price{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07)}
+    .card h3{font-size:1.18rem; margin:0 0 8px}
+    .meta{margin:0 0 10px; color:var(--gold2)}
+    .desc{margin:0; color:#c8d2dc; line-height:1.8; min-height:86px}
+    .card-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .searchbar{
+      display:grid; grid-template-columns:1.2fr .7fr .7fr; gap:12px; margin:22px 0 8px;
+    }
+    input,select,textarea{
+      width:100%; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.08);
+      color:var(--text); border-radius:14px; padding:14px; font:inherit;
+    }
+    textarea{resize:vertical}
+    .empty{
+      grid-column:1/-1; padding:24px; border-radius:24px; border:1px dashed var(--line); color:var(--muted);
+    }
+    .modal{
+      position:fixed; inset:0; background:rgba(4,8,12,.64); display:none; align-items:center; justify-content:center;
+      z-index:50; padding:18px;
+    }
+    .modal.show{display:flex}
+    .modal-card{width:min(760px,100%); padding:28px}
+    .modal-head{display:flex; justify-content:space-between; gap:12px; align-items:start}
+    .close{background:none; border:none; color:var(--muted); font-size:1.5rem; cursor:pointer}
+    .admin-layout{display:grid; grid-template-columns:.95fr 1.25fr; gap:18px; margin-top:22px}
+    .admin-panel{padding:24px}
+    .form-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+    .full{grid-column:1/-1}
+    .inline{display:flex; gap:10px; align-items:center}
+    .muted{color:var(--muted)}
+    table{width:100%; border-collapse:collapse}
+    th,td{padding:14px 12px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; vertical-align:top}
+    th{color:var(--gold2); font-size:.92rem}
+    .actions{display:flex; gap:8px; flex-wrap:wrap}
+    .hidden{display:none !important}
+    .flash{
+      margin-top:12px; padding:14px 16px; border-radius:14px; border:1px solid var(--line);
+      background:rgba(201,170,102,.08); color:var(--gold2);
+    }
+    .site-end{
+      text-align:center;
+      color:var(--muted);
+      margin-top:40px;
+      font-size:.92rem;
+    }
+    @media (max-width:980px){
+      .hero,.admin-layout,.cards,.searchbar{grid-template-columns:1fr}
+    }
+    @media (max-width:720px){
+      .wrap{width:min(100% - 20px,1180px)}
+      .topbar{position:static; padding:14px}
+      .brand small{display:none}
+      .hero{padding:24px}
+      .form-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <a class="brand" href="#">
+        <span class="mark">S</span>
+        <div>
+          <strong>SeanKim Mock Archive</strong>
+          <small>Mathematics & Science Inquiry</small>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="#math">수학</a>
+        <a href="#science">과학탐구</a>
+        <button id="openAdminBtn">관리자</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="notice">SeanKim이 제작한 모의고사 배포 사이트입니다.</div>
+        <p class="eyebrow">PREMIUM MOCK EXAMS</p>
+        <h1>수학과 과학탐구 모의고사를<br>깔끔하고 고급스럽게 제공합니다</h1>
+        <p>
+          정돈된 레이아웃과 차분한 분위기로 구성한 모의고사 배포 사이트입니다.
+          필요한 자료를 빠르게 찾고, 수학과 과학탐구 모의고사를 한곳에서 확인할 수 있습니다.
+          모든 자료는 <strong>0원</strong>으로 제공됩니다.
+        </p>
+        <div class="hero-actions">
+          <a href="#archive" class="btn gold">자료 보기</a>
+          <button class="btn dark" id="openAdminBtn2">관리자 로그인</button>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="stat"><span>운영 과목</span><strong>수학 / 과학탐구</strong></div>
+        <div class="stat"><span>자료 이용</span><strong>모든 자료 0원 제공</strong></div>
+      </div>
+    </section>
+
+    <section id="archive">
+      <div class="searchbar">
+        <input id="searchInput" type="text" placeholder="제목이나 설명 검색">
+        <select id="subjectFilter">
+          <option value="all">전체 과목</option>
+          <option value="수학">수학</option>
+          <option value="과학탐구">과학탐구</option>
+        </select>
+        <select id="yearFilter">
+          <option value="all">전체 연도</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="math">
+      <div class="section-head">
+        <div>
+          <p class="label">MATHEMATICS</p>
+          <h2>수학 모의고사</h2>
+        </div>
+        <span class="pill">0원 배포</span>
+      </div>
+      <div class="cards" id="mathCards"></div>
+    </section>
+
+    <section id="science">
+      <div class="section-head">
+        <div>
+          <p class="label">SCIENCE INQUIRY</p>
+          <h2>과학탐구 모의고사</h2>
+        </div>
+        <span class="pill">0원 배포</span>
+      </div>
+      <div class="cards" id="scienceCards"></div>
+    </section>
+
+    <div class="site-end">© SeanKim Mock Archive</div>
+  </div>
+
+  <div class="modal" id="detailModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <p class="label" id="detailSubject">SUBJECT</p>
+          <h2 id="detailTitle">제목</h2>
+          <p class="meta" id="detailMeta"></p>
+        </div>
+        <button class="close" data-close="detailModal">×</button>
+      </div>
+      <p id="detailDesc" style="line-height:1.9;color:#d5dee6;margin-top:18px"></p>
+      <div class="hero-actions">
+        <span class="price">가격 0원</span>
+        <a id="detailPdf" class="btn gold hidden" download>PDF 다운로드</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="adminModal">
+    <div class="modal-card" style="width:min(1100px,100%)">
+      <div class="modal-head">
+        <div>
+          <p class="label">ADMIN MODE</p>
+          <h2>관리자 편집</h2>
+        </div>
+        <button class="close" data-close="adminModal">×</button>
+      </div>
+
+      <div id="loginView">
+        <p class="muted">관리자 계정으로 로그인하세요.</p>
+        <div class="form-grid" style="margin-top:16px">
+          <div>
+            <label>아이디</label>
+            <input id="adminId" type="text" value="admin">
+          </div>
+          <div>
+            <label>비밀번호</label>
+            <input id="adminPw" type="password" value="1234">
+          </div>
+          <div class="full">
+            <button class="btn gold" id="loginBtn">로그인</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="adminView" class="hidden">
+        <div class="inline" style="justify-content:space-between; margin:10px 0 18px">
+          <p class="muted" style="margin:0">자료를 추가·수정·삭제할 수 있습니다.</p>
+          <button class="btn dark small" id="logoutBtn">로그아웃</button>
+        </div>
+
+        <div class="admin-layout">
+          <div class="admin-panel">
+            <h3 style="margin-top:0">자료 등록 / 수정</h3>
+            <div class="form-grid" style="margin-top:16px">
+              <div>
+                <label>과목</label>
+                <select id="fSubject">
+                  <option value="수학">수학</option>
+                  <option value="과학탐구">과학탐구</option>
+                </select>
+              </div>
+              <div>
+                <label>연도</label>
+                <input id="fYear" type="text" placeholder="2026">
+              </div>
+              <div class="full">
+                <label>제목</label>
+                <input id="fTitle" type="text" placeholder="예: 2026학년도 6월 수학 모의고사">
+              </div>
+              <div>
+                <label>월</label>
+                <input id="fMonth" type="text" placeholder="6월">
+              </div>
+              <div>
+                <label>PDF 파일</label>
+                <input id="fPdf" type="file" accept=".pdf,application/pdf">
+              </div>
+              <div class="full">
+                <label>설명</label>
+                <textarea id="fDesc" rows="5" placeholder="자료 설명을 입력하세요"></textarea>
+              </div>
+              <div class="full inline">
+                <button class="btn gold" id="saveBtn">저장</button>
+                <button class="btn dark" id="resetBtn">초기화</button>
+                <span class="muted" id="editInfo">새 자료 등록 중</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-panel">
+            <h3 style="margin-top:0">등록된 자료</h3>
+            <div style="overflow:auto; margin-top:16px">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>과목</th>
+                    <th>제목</th>
+                    <th>연도</th>
+                    <th>월</th>
+                    <th>가격</th>
+                    <th>PDF</th>
+                    <th>관리</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "premium_mock_archive_data_v3";
+    const LOGIN_KEY = "premium_mock_archive_admin_login_v3";
+    const defaultData = [
+      {id:1, subject:"수학", title:"2026학년도 3월 수학 모의고사", year:"2026", month:"3월", description:"킬러 문항을 배제하고, 준킬러와 개념 연계를 강화한 수학 모의고사입니다.", price:0, pdfName:"", pdfData:""},
+      {id:2, subject:"수학", title:"2026학년도 6월 수학 모의고사", year:"2026", month:"6월", description:"실전 감각을 끌어올리기 위한 난도 조절형 수학 모의고사입니다.", price:0, pdfName:"", pdfData:""},
+      {id:3, subject:"과학탐구", title:"2026학년도 4월 통합 과학탐구 모의고사", year:"2026", month:"4월", description:"개념 이해와 자료 해석 능력을 함께 평가하는 과학탐구 모의고사입니다.", price:0, pdfName:"", pdfData:""},
+      {id:4, subject:"과학탐구", title:"2026학년도 7월 과학탐구 실전형 모의고사", year:"2026", month:"7월", description:"그래프 해석과 응용 문항 중심의 실전형 과학탐구 모의고사입니다.", price:0, pdfName:"", pdfData:""}
+    ];
+
+    let data = loadData();
+    let editingId = null;
+
+    const mathCards = document.getElementById("mathCards");
+    const scienceCards = document.getElementById("scienceCards");
+    const adminTable = document.getElementById("adminTable");
+    const yearFilter = document.getElementById("yearFilter");
+    const searchInput = document.getElementById("searchInput");
+    const subjectFilter = document.getElementById("subjectFilter");
+
+    function loadData(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : defaultData;
+      }catch(e){
+        return defaultData;
+      }
+    }
+    function saveData(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    function esc(str){
+      return String(str ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+    }
+    function getFilteredData(){
+      const q = searchInput.value.trim().toLowerCase();
+      const sub = subjectFilter.value;
+      const year = yearFilter.value;
+      return data.filter(item => {
+        const hitQ = !q || item.title.toLowerCase().includes(q) || item.description.toLowerCase().includes(q);
+        const hitSub = sub === "all" || item.subject === sub;
+        const hitYear = year === "all" || item.year === year;
+        return hitQ && hitSub && hitYear;
+      });
+    }
+    function renderYearOptions(){
+      const years = [...new Set(data.map(d => d.year))].sort((a,b) => b.localeCompare(a, 'ko'));
+      yearFilter.innerHTML = '<option value="all">전체 연도</option>' + years.map(y => `<option value="${esc(y)}">${esc(y)}</option>`).join("");
+    }
+    function cardTemplate(item){
+      const pdfBtn = item.pdfData
+        ? `<a class="btn gold small" href="${item.pdfData}" download="${esc(item.pdfName || item.title + '.pdf')}">PDF 다운로드</a>`
+        : `<span class="tag muted">PDF 준비 중</span>`;
+      return `
+        <article class="card">
+          <div class="card-top">
+            <span class="subject">${esc(item.subject)}</span>
+            <span class="price">0원</span>
+          </div>
+          <h3>${esc(item.title)}</h3>
+          <p class="meta">${esc(item.year)}학년도 · ${esc(item.month)}</p>
+          <p class="desc">${esc(item.description || "설명이 아직 등록되지 않았습니다.")}</p>
+          <div class="card-actions">
+            <button class="btn dark small" onclick="openDetail(${item.id})">상세 보기</button>
+            ${pdfBtn}
+          </div>
+        </article>
+      `;
+    }
+    function renderCards(){
+      const filtered = getFilteredData();
+      const math = filtered.filter(x => x.subject === "수학");
+      const sci = filtered.filter(x => x.subject === "과학탐구");
+
+      mathCards.innerHTML = math.length ? math.map(cardTemplate).join("") : `<div class="empty">조건에 맞는 수학 자료가 없습니다.</div>`;
+      scienceCards.innerHTML = sci.length ? sci.map(cardTemplate).join("") : `<div class="empty">조건에 맞는 과학탐구 자료가 없습니다.</div>`;
+    }
+    function renderAdminTable(){
+      adminTable.innerHTML = data.sort((a,b) => Number(b.year) - Number(a.year) || b.id - a.id).map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${esc(item.subject)}</td>
+          <td>${esc(item.title)}</td>
+          <td>${esc(item.year)}</td>
+          <td>${esc(item.month)}</td>
+          <td>0원</td>
+          <td>${item.pdfData ? "있음" : "없음"}</td>
+          <td>
+            <div class="actions">
+              <button class="btn dark small" onclick="editItem(${item.id})">수정</button>
+              <button class="btn danger small" onclick="deleteItem(${item.id})">삭제</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+    function rerender(){
+      renderYearOptions();
+      renderCards();
+      renderAdminTable();
+      saveData();
+    }
+
+    function openModal(id){ document.getElementById(id).classList.add("show"); }
+    function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+
+    window.openDetail = function(id){
+      const item = data.find(x => x.id === id);
+      if(!item) return;
+      document.getElementById("detailSubject").textContent = item.subject.toUpperCase();
+      document.getElementById("detailTitle").textContent = item.title;
+      document.getElementById("detailMeta").textContent = `${item.year}학년도 · ${item.month}`;
+      document.getElementById("detailDesc").textContent = item.description || "설명이 아직 등록되지 않았습니다.";
+      const pdfLink = document.getElementById("detailPdf");
+      if(item.pdfData){
+        pdfLink.classList.remove("hidden");
+        pdfLink.href = item.pdfData;
+        pdfLink.download = item.pdfName || (item.title + ".pdf");
+      }else{
+        pdfLink.classList.add("hidden");
+      }
+      openModal("detailModal");
+    };
+
+    function setAdminView(){
+      const loggedIn = localStorage.getItem(LOGIN_KEY) === "1";
+      document.getElementById("loginView").classList.toggle("hidden", loggedIn);
+      document.getElementById("adminView").classList.toggle("hidden", !loggedIn);
+    }
+
+    async function fileToDataURL(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function resetForm(){
+      editingId = null;
+      document.getElementById("fSubject").value = "수학";
+      document.getElementById("fYear").value = "";
+      document.getElementById("fTitle").value = "";
+      document.getElementById("fMonth").value = "";
+      document.getElementById("fDesc").value = "";
+      document.getElementById("fPdf").value = "";
+      document.getElementById("editInfo").textContent = "새 자료 등록 중";
+    }
+
+    window.editItem = function(id){
+      const item = data.find(x => x.id === id);
+      if(!item) return;
+      editingId = id;
+      document.getElementById("fSubject").value = item.subject;
+      document.getElementById("fYear").value = item.year;
+      document.getElementById("fTitle").value = item.title;
+      document.getElementById("fMonth").value = item.month;
+      document.getElementById("fDesc").value = item.description;
+      document.getElementById("fPdf").value = "";
+      document.getElementById("editInfo").textContent = `수정 중: ID ${id}`;
+      openModal("adminModal");
+      setAdminView();
+    };
+
+    window.deleteItem = function(id){
+      if(!confirm("정말 삭제할까요?")) return;
+      data = data.filter(x => x.id !== id);
+      if(editingId === id) resetForm();
+      rerender();
+    };
+
+    document.getElementById("saveBtn").addEventListener("click", async () => {
+      const subject = document.getElementById("fSubject").value;
+      const year = document.getElementById("fYear").value.trim();
+      const title = document.getElementById("fTitle").value.trim();
+      const month = document.getElementById("fMonth").value.trim();
+      const description = document.getElementById("fDesc").value.trim();
+      const pdfFile = document.getElementById("fPdf").files[0];
+
+      if(!title || !year || !month){
+        alert("제목, 연도, 월을 입력하세요.");
+        return;
+      }
+
+      let pdfData = null, pdfName = null;
+      if(pdfFile){
+        pdfData = await fileToDataURL(pdfFile);
+        pdfName = pdfFile.name;
+      }
+
+      if(editingId){
+        const idx = data.findIndex(x => x.id === editingId);
+        if(idx === -1) return;
+        data[idx] = {
+          ...data[idx],
+          subject, year, title, month, description, price:0,
+          pdfData: pdfData ?? data[idx].pdfData,
+          pdfName: pdfName ?? data[idx].pdfName
+        };
+      }else{
+        const nextId = data.length ? Math.max(...data.map(x => x.id)) + 1 : 1;
+        data.push({
+          id: nextId, subject, year, title, month, description, price:0,
+          pdfData: pdfData || "", pdfName: pdfName || ""
+        });
+      }
+      resetForm();
+      rerender();
+      alert("저장되었습니다.");
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", resetForm);
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const id = document.getElementById("adminId").value.trim();
+      const pw = document.getElementById("adminPw").value.trim();
+      if(id === "admin" && pw === "1234"){
+        localStorage.setItem(LOGIN_KEY, "1");
+        setAdminView();
+      }else{
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      }
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem(LOGIN_KEY);
+      setAdminView();
+      resetForm();
+    });
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.close));
+    });
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", e => {
+        if(e.target === modal) closeModal(modal.id);
+      });
+    });
+
+    ["openAdminBtn","openAdminBtn2"].forEach(id => {
+      document.getElementById(id).addEventListener("click", () => {
+        openModal("adminModal");
+        setAdminView();
+      });
+    });
+
+    searchInput.addEventListener("input", renderCards);
+    subjectFilter.addEventListener("change", renderCards);
+    yearFilter.addEventListener("change", renderCards);
+
+    renderYearOptions();
+    renderCards();
+    renderAdminTable();
+    setAdminView();
+  </script>
+</body>
+</html>
