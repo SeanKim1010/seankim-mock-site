@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}SeanKim 모의고사 배포 사이트{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <div class="notice">SeanKim이 제작한 모의고사 배포 사이트입니다.</div>
+    <p class="eyebrow">PREMIUM MOCK EXAMS</p>
+    <h1>수학과 과학탐구 모의고사를<br>깔끔하고 고급스럽게 제공합니다</h1>
+    <p class="hero-text">
+      정돈된 레이아웃과 차분한 분위기로 구성한 모의고사 배포 사이트입니다.
+      필요한 자료를 빠르게 찾고, 수학과 과학탐구 모의고사를 한곳에서 확인할 수 있습니다.
+      모든 자료는 <strong>0원</strong>으로 제공됩니다.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="#math">자료 보기</a>
+      <a class="btn btn-dark" href="{{ url_for('admin_login') }}">관리자 로그인</a>
+    </div>
+  </div>
+  <div class="hero-panel">
+    <div class="stat-card">
+      <span>운영 과목</span>
+      <strong>수학 / 과학탐구</strong>
+    </div>
+    <div class="stat-card">
+      <span>자료 이용</span>
+      <strong>모든 자료 0원 제공</strong>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="math">
+  <div class="section-head">
+    <div>
+      <p class="section-label">MATHEMATICS</p>
+      <h2>수학 모의고사</h2>
+    </div>
+    <span class="pill">0원 배포</span>
+  </div>
+  <div class="cards">
+    {% for exam in math_exams %}
+    <article class="card">
+      <div class="card-top">
+        <span class="subject">{{ exam.subject }}</span>
+        <span class="price">0원</span>
+      </div>
+      <h3>{{ exam.title }}</h3>
+      <p class="meta">{{ exam.year }}학년도 · {{ exam.exam_month }}</p>
+      <p class="desc">{{ exam.description or '설명이 아직 등록되지 않았습니다.' }}</p>
+      <div class="card-actions">
+        {% if exam.pdf_filename %}
+          <a class="btn btn-gold small" href="{{ url_for('download_file', filename=exam.pdf_filename) }}">PDF 다운로드</a>
+        {% else %}
+          <span class="empty-file">PDF 준비 중</span>
+        {% endif %}
+      </div>
+    </article>
+    {% else %}
+    <div class="empty-box">등록된 수학 모의고사가 없습니다.</div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="science">
+  <div class="section-head">
+    <div>
+      <p class="section-label">SCIENCE INQUIRY</p>
+      <h2>과학탐구 모의고사</h2>
+    </div>
+    <span class="pill">0원 배포</span>
+  </div>
+  <div class="cards">
+    {% for exam in science_exams %}
+    <article class="card">
+      <div class="card-top">
+        <span class="subject">{{ exam.subject }}</span>
+        <span class="price">0원</span>
+      </div>
+      <h3>{{ exam.title }}</h3>
+      <p class="meta">{{ exam.year }}학년도 · {{ exam.exam_month }}</p>
+      <p class="desc">{{ exam.description or '설명이 아직 등록되지 않았습니다.' }}</p>
+      <div class="card-actions">
+        {% if exam.pdf_filename %}
+          <a class="btn btn-gold small" href="{{ url_for('download_file', filename=exam.pdf_filename) }}">PDF 다운로드</a>
+        {% else %}
+          <span class="empty-file">PDF 준비 중</span>
+        {% endif %}
+      </div>
+    </article>
+    {% else %}
+    <div class="empty-box">등록된 과학탐구 모의고사가 없습니다.</div>
+    {% endfor %}
+  </div>
+</section>
+
+<p class="site-end">© SeanKim Mock Archive</p>
+{% endblock %}

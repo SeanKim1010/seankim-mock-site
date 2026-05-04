@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}관리자 대시보드{% endblock %}
+{% block content %}
+<section class="dashboard-head">
+  <div>
+    <p class="section-label">ADMIN DASHBOARD</p>
+    <h1>자료 관리</h1>
+    <p>수학과 과학탐구만 등록할 수 있으며 가격은 항상 0원으로 유지됩니다.</p>
+  </div>
+</section>
+
+<section class="admin-layout">
+  <div class="admin-panel form-panel">
+    <h2>새 자료 등록</h2>
+    <form class="form-grid" method="post" action="{{ url_for('admin_create') }}" enctype="multipart/form-data">
+      <label>
+        <span>과목</span>
+        <select name="subject" required>
+          <option value="수학">수학</option>
+          <option value="과학탐구">과학탐구</option>
+        </select>
+      </label>
+      <label>
+        <span>제목</span>
+        <input type="text" name="title" placeholder="예: 2026학년도 9월 수학 모의고사" required>
+      </label>
+      <label>
+        <span>연도</span>
+        <input type="text" name="year" placeholder="2026" required>
+      </label>
+      <label>
+        <span>월</span>
+        <input type="text" name="exam_month" placeholder="9월" required>
+      </label>
+      <label class="full">
+        <span>설명</span>
+        <textarea name="description" rows="5" placeholder="자료 소개를 입력하세요"></textarea>
+      </label>
+      <label class="full">
+        <span>PDF 업로드</span>
+        <input type="file" name="pdf_file" accept=".pdf">
+      </label>
+      <div class="full">
+        <button class="btn btn-gold full" type="submit">자료 등록</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="admin-panel table-panel">
+    <h2>등록된 자료</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>과목</th>
+            <th>제목</th>
+            <th>연도</th>
+            <th>월</th>
+            <th>가격</th>
+            <th>PDF</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for exam in exams %}
+          <tr>
+            <td>{{ exam.id }}</td>
+            <td>{{ exam.subject }}</td>
+            <td>{{ exam.title }}</td>
+            <td>{{ exam.year }}</td>
+            <td>{{ exam.exam_month }}</td>
+            <td>0원</td>
+            <td>{% if exam.pdf_filename %}있음{% else %}없음{% endif %}</td>
+            <td class="actions">
+              <a class="btn btn-dark small" href="{{ url_for('admin_edit', exam_id=exam.id) }}">수정</a>
+              <form method="post" action="{{ url_for('admin_delete', exam_id=exam.id) }}" onsubmit="return confirm('정말 삭제할까요?');">
+                <button class="btn btn-danger small" type="submit">삭제</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8">등록된 자료가 없습니다.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

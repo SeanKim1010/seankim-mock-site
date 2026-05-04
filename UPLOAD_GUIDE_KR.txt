@@ -1,0 +1,36 @@
+처음부터 다시 올리는 방법
+
+1. GitHub에서 새 저장소를 만드세요.
+   저장소 이름 예: seankim-mock-site-clean
+
+2. 이 ZIP 파일을 압축 해제하세요.
+
+3. 압축 푼 폴더 안의 파일과 폴더를 전부 GitHub에 업로드하세요.
+   반드시 아래가 보여야 합니다.
+   - app.py
+   - requirements.txt
+   - render.yaml
+   - Procfile
+   - templates 폴더
+   - static 폴더
+   - uploads 폴더
+
+4. Render에서 New + → Web Service 선택
+
+5. 새 GitHub 저장소 연결
+
+6. 설정값
+   Build Command:
+   pip install -r requirements.txt
+
+   Start Command:
+   gunicorn app:app
+
+7. Create Web Service 클릭
+
+8. 배포 완료 후 주소 접속
+
+관리자 로그인:
+주소 뒤에 /admin/login
+아이디 admin
+비밀번호 1234
