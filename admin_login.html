@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}관리자 로그인{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card">
+    <p class="section-label">ADMIN ACCESS</p>
+    <h1>관리자 로그인</h1>
+    <p class="auth-text">자료를 등록·수정·삭제하려면 로그인하세요.</p>
+    <form method="post" class="form-grid">
+      <label><span>아이디</span><input type="text" name="username" value="admin" required></label>
+      <label><span>비밀번호</span><input type="password" name="password" value="1234" required></label>
+      <button class="btn btn-gold full" type="submit">로그인</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

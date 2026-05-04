@@ -1,0 +1,18 @@
+[requirements.txt]
+Flask==3.0.3
+gunicorn==22.0.0
+
+[render.yaml]
+services:
+  - type: web
+    name: seankim-mock-site
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+
+[Procfile]
+web: gunicorn app:app

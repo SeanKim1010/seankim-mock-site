@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}자료 수정{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <div class="auth-card wide">
+    <p class="section-label">EDIT EXAM</p>
+    <h1>자료 수정</h1>
+    <form method="post" class="form-grid" enctype="multipart/form-data">
+      <label><span>과목</span><select name="subject" required><option value="수학" {% if exam.subject == '수학' %}selected{% endif %}>수학</option><option value="과학탐구" {% if exam.subject == '과학탐구' %}selected{% endif %}>과학탐구</option></select></label>
+      <label><span>제목</span><input type="text" name="title" value="{{ exam.title }}" required></label>
+      <label><span>연도</span><input type="text" name="year" value="{{ exam.year }}" required></label>
+      <label><span>월</span><input type="text" name="exam_month" value="{{ exam.exam_month }}" required></label>
+      <label class="full"><span>설명</span><textarea name="description" rows="5">{{ exam.description }}</textarea></label>
+      <label class="full"><span>새 PDF 업로드</span><input type="file" name="pdf_file" accept=".pdf"></label>
+      {% if exam.pdf_filename %}<label class="full inline-check"><input type="checkbox" name="remove_pdf" value="1"><span>기존 PDF 제거</span></label>{% endif %}
+      <div class="full action-row"><button class="btn btn-gold" type="submit">수정 저장</button><a class="btn btn-dark" href="{{ url_for('admin_dashboard') }}">목록으로</a></div>
+    </form>
+  </div>
+</section>
+{% endblock %}
